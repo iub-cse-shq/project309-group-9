@@ -4,7 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
 const server = http.Server(app)
-const User = require('./user.model')
+const Student = require('./student.model')
+const Teacher = require('./teacher.model')
 const Admin = require('./admin.model')
 const path = require('path');
 const session = require('express-session');
@@ -22,7 +23,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // DB Connection
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const { request } = require('express');
 mongoose.Promise = global.Promise
 const dbURL = 'mongodb://localhost:27017/project309' //change this if you are using Atlas
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }) 
@@ -139,7 +141,7 @@ app.get('/addTeacher', function(request, response){
 })
 
 app.get('/users/all', function(request, response){
-    User.find({}, function (err, data) {
+    Student.find({}, function (err, data) {
       if(err){
         return response.status(400).json({
           error: 'data is missing'
@@ -152,18 +154,33 @@ app.get('/users/all', function(request, response){
 
 
 
-app.post('/user/new', function(request, response){
-    var newUser = new User(request.body)
+app.post('/student/new', function(request, response){
+    const newUser = new Student(request.body)
 
     newUser.save(function (err, data) {
         if (err)
           return response.status(400).json({
             error: 'data is missing'
           })
-        return response.status(200).json({
-          message: 'Product created successfully'
-        })
+          response.redirect("/addStudent")
+        // return response.status(200).json({
+        //   message: 'Student added successfully'
+        // })
       })     
+})
+
+app.post('/teacher/new', function(request, response){
+  var newUser = new Teacher(request.body)
+
+  newUser.save(function (err, data) {
+      if (err)
+        return response.status(400).json({
+          error: 'data is missing'
+        })
+      return response.status(200).json({
+        message: 'Teacher added successfully'
+      })
+    })     
 })
 
 // app.put('/product/update/:id/:quantity/', (request, response) => {
