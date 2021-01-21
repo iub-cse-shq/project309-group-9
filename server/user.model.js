@@ -19,7 +19,11 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    role: String /* Student or Teacher */
+    role:{
+        type: String,
+        required: true,
+        enum: ["Student", "Teacher"]
+    },/* Student or Teacher */
     // profile: { type: ObjectID, refPath: 'role' }
 });
 
@@ -29,12 +33,13 @@ const UserSchema = new Schema({
 //     department: String,
 //     major: String,
 //     semester: String,
-//     teachers: [{ type: ObjectID, ref: 'Teacher' }] 
+
 // });
 
 // var teacherProfileSchema = new Schema({
 //     income: Number,
 //     rank: String 
+//     teachers: [{ type: ObjectID, ref: 'Teacher' }] 
 // });
 
 // const UserSchema = new mongoose.Schema({

@@ -1,24 +1,40 @@
-var http = require('http')
-var express = require('express')
-var bodyParser = require('body-parser')
-var app = express()
-var server = http.Server(app)
-var User = require('./user.model')
-var Admin = require('./admin.model')
-// var bcrypt = require('bcrypt-nodejs');
+require('dotenv').config();
+const http = require('http')
+const express = require('express')
+const bodyParser = require('body-parser')
+const app = express()
+const server = http.Server(app)
+const User = require('./user.model')
+const Admin = require('./admin.model')
 const path = require('path');
+const session = require('express-session');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}))
+app.use(session({
+  secret: "My little secret string lol.",
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // DB Connection
-var mongoose = require('mongoose')
+const mongoose = require('mongoose')
 mongoose.Promise = global.Promise
-var dbURL = 'mongodb://localhost:27017/project309' //change this if you are using Atlas
+const dbURL = 'mongodb://localhost:27017/project309' //change this if you are using Atlas
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }) 
+mongoose.set("useCreateIndex", true);
 mongoose.connection.on('error', (error) => {
         console.log(error);
     });
 
+
+passport.use(Admin.createStrategy());
+passport.serializeUser(Admin.serializeUser());
+passport.deserializeUser(Admin.deserializeUser());
 
 // your server routes go here
 app.use('/css', express.static(path.join(__dirname , '../client/public/css')));
@@ -34,37 +50,72 @@ app.get('/', function(request, response){
 
 // Create a new admin user
 app.post('/register', function(request, response){
-  var new_user = new Admin(request.body);
-  new_user.password = new_user.generateHash(request.password);
-  new_user.save(function (err, data){
-    if (err)
-    return response.status(400).json({
-      error: 'data is missing'
-    })
-    return response.status(200).json({
-      message: 'admin user created successfully'
+  Admin.register({username: request.body.username}, request.body.password, function(err, user){
+    if(err){
+      console.log(err);
+      response.redirect('/');
+    } else {
+      passport.authenticate("local")(request, response, function(){
+        // message: 'admin user created successfully'
+        response.redirect("/addStudent");
+      })
+    }
   })
-  } );
+
+  // var new_user = new Admin({
+  //   username: request.body.username,
+  //   password: request.body.password
+  // });
+  // // new_user.password = new_user.generateHash(request.password);
+  // new_user.save(function (err, data){
+  //     if (err)
+  //       return response.status(400).json({
+  //         error: 'data is missing'
+  //       })
+  //       return response.status(200).json({
+  //         message: 'admin user created successfully'
+  //     })
+  // });
 })
 
 app.post('/', function(request, response){
-  Admin.findOne({username: request.body.username}, function(err, user) {
-  //  var encryptedPass = bcrypt.hashSync(request.body.password, bcrypt.genSaltSync(8), null);
-  //  if(bcrypt.compareSync(encryptedPass, this.encryptedPass)){
-  //    response.send('logged in successfully!');
-  //  }else {
-  //    response.send('error! can\'t login');
-  //  }
-    // user.generateHash(request.body.password);
-
-    if (!user.validPassword(user.generateHash(request.body.password))) {
-      //password did not match
-      response.send('username or password invalid')
+  const user = new Admin({
+    username: request.body.username,
+    password: request.body.passport
+  })
+  request.login(user, function(err){
+    if(err){
+      console.log(err);
     } else {
-      // password matched. proceed forward
-      response.sendFile(path.join(__dirname , '../client/public/files/addStudent.html'));
+      passport.authenticate("local")(request, response, function(){
+        response.redirect("/addStudent");
+      })
     }
-  });
+  })
+
+  // const username = request.body.username;
+  // const password = request.body.password;
+  // Admin.findOne({username: username}, function(err, user) {
+  //   if(err){
+  //     console.log(err);
+  //     return response.status(400).json({
+  //       error: 'data is missing'
+  //     })
+  //     // alert('Username or Password is incorrect!')
+  //   }
+  //   else{
+  //     if(user){
+  //       if(user.password===password){
+  //           response.sendFile(path.join(__dirname , '../client/public/files/addStudent.html'));
+  //       }
+  //     }
+  //   }
+  // });
+})
+
+app.get('/logout', function(request, response){
+  request.logout();
+  response.redirect('/');
 })
 
 app.get('/dashboard', function(request, response){
@@ -72,11 +123,19 @@ app.get('/dashboard', function(request, response){
 })
 
 app.get('/addStudent', function(request, response){
+  if(request.isAuthenticated()){
     response.sendFile(path.join(__dirname , '../client/public/files/addStudent.html'));
+  } else{
+    response.redirect("/");
+  }
 })
 
 app.get('/addTeacher', function(request, response){
+  if(request.isAuthenticated()){
     response.sendFile(path.join(__dirname , '../client/public/files/addTeacher.html'));
+  } else {
+    response.redirect("/");
+  }
 })
 
 app.get('/users/all', function(request, response){

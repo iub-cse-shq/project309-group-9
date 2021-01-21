@@ -1,25 +1,29 @@
-var mongoose = require('mongoose');
-// var encrypt = require('mongoose-encryption')
-var Schema = mongoose.Schema;
-// var bcrypt = require('bcrypt-nodejs');
-// var bcrypt = require('bcryptjs')
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const session = require('express-session');
+const passport = require('passport');
+const passportLocalMongoose = require('passport-local-mongoose');
+const express = require('express')
+const app = express()
+app.use(session({
+  secret: "My little secret string lol.",
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-var adminUserSchema = new Schema({
-  username: { type: String, required: true },   // , index: { unique: true }
-  password: { type: String, required: true }
+const adminUserSchema = new Schema({
+  username: String,
+  password: String
 });
 
-const secret = "Thisisourlittlesecret.";
-adminUserSchema.plugin(encrypt, {secret:secret, encryptedFields: ['password'] })
+adminUserSchema.plugin(passportLocalMongoose);
 
-// hash the password
-// adminUserSchema.methods.generateHash = function(password) {
-//   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-// };
+const Admin = mongoose.model('admin', adminUserSchema);
 
-// // checking if password is valid
-// adminUserSchema.methods.validPassword = function(password) {
-//   return bcrypt.compareSync(password, this.password);
-// };
-var Admin = mongoose.model('admin', adminUserSchema);
+passport.use(Admin.createStrategy());
+passport.serializeUser(Admin.serializeUser());
+passport.deserializeUser(Admin.deserializeUser());
+
 module.exports = Admin;
