@@ -2,22 +2,39 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    name: String,
-    email: String,
-    password: String,
-    role: String, /* Student or Teacher */
+    name: {
+        type: String,
+        validate: {
+            validator: (name) => name.length>2,
+            message: 'Name must be longer than 2 characters.'
+        },
+        required: true
+    },
+    id: {
+        type: Number,
+        required: true,
+        // index: { unique: true }
+    },
+    university: {
+        type: String,
+        required: true
+    },
+    role: String /* Student or Teacher */
     // profile: { type: ObjectID, refPath: 'role' }
 });
 
 // var studentProfileSchema = new Schema({
-//     age: Number,
-//     grade: Number,
+//     year: Number,
+//     School: String,
+//     department: String,
+//     major: String,
+//     semester: String,
 //     teachers: [{ type: ObjectID, ref: 'Teacher' }] 
 // });
 
 // var teacherProfileSchema = new Schema({
-//     school: String,
-//     subject: String 
+//     income: Number,
+//     rank: String 
 // });
 
 // const UserSchema = new mongoose.Schema({
