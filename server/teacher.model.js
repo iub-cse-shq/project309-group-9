@@ -6,8 +6,7 @@ const TeacherSchema = new Schema({
     lastname: String,
     teacherId: {
         type: Number,
-        required: true,
-        unique: true
+        required: true
     },
     teachers_uni: {
         type: String,
@@ -17,7 +16,7 @@ const TeacherSchema = new Schema({
         type: Number,
         required: true
     },
-    rank: {
+    teachers_rank: {
         type: String,
         required: true
     }

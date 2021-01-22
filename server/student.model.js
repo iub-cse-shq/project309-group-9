@@ -8,8 +8,7 @@ const StudentSchema = new Schema({
     },
     studentId: {
         type: Number,
-        required: true,
-        unique: true
+        required: true
     },
     university: {
         type: String,
@@ -39,23 +38,6 @@ const StudentSchema = new Schema({
     // },/* Student or Teacher */
     // profile: { type: ObjectID, refPath: 'role' }
 });
-
-
-// var teacherProfileSchema = new Schema({
-//     income: Number,
-//     rank: String 
-//     teachers: [{ type: ObjectID, ref: 'Teacher' }] 
-// });
-
-// const UserSchema = new mongoose.Schema({
-//     // productId: Number,
-//     // name: { type: String, required: true },
-//     // description: { type: String, required: true },
-//     // url: { type: String, required: true },
-//     // quantity: { type: Number, required: true },
-//     // price: { type: Number, required: true },
-//     // inCart: Number
-// })
 
 
 const Student = mongoose.model('student', StudentSchema)

@@ -7,7 +7,9 @@ const server = http.Server(app)
 const Student = require('./student.model')
 const Teacher = require('./teacher.model')
 const Admin = require('./admin.model')
+const multer = require('multer');
 const path = require('path');
+const csv = require('csvtojson');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocalMongoose = require('passport-local-mongoose');
@@ -21,6 +23,17 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+var storage = multer.diskStorage({  
+  destination:(req,file,cb)=>{  
+      cb(null,'./public/uploads');  
+  },  
+  filename:(req,file,cb)=>{  
+      cb(null,file.originalname);  
+  }  
+});  
+
+var uploads = multer({storage:storage});  
 
 // DB Connection
 const mongoose = require('mongoose');
@@ -121,6 +134,17 @@ app.get('/logout', function(request, response){
 })
 
 app.get('/dashboard', function(request, response){
+//   csvModel.find((err,data)=>{  
+//     if(err){  
+//         console.log(err);  
+//     }else{  
+//          if(data!=''){  
+//              res.render('demo',{data:data});  
+//          }else{  
+//              res.render('demo',{data:''});  
+//          }  
+//     }  
+// })
     response.sendFile(path.join(__dirname , '../client/public/files/dashboard.html'));
 })
 
@@ -140,7 +164,7 @@ app.get('/addTeacher', function(request, response){
   }
 })
 
-app.get('/users/all', function(request, response){
+app.get('/students/all', function(request, response){
     Student.find({}, function (err, data) {
       if(err){
         return response.status(400).json({
@@ -152,16 +176,29 @@ app.get('/users/all', function(request, response){
       })
 })
 
+app.get('/teachers/all', function(request, response){
+  Teacher.find({}, function (err, data) {
+    if(err){
+      return response.status(400).json({
+        error: 'data is missing'
+      })
+    }
+      // console.log(data);
+    return response.status(200).json(JSON.stringify(data));
+    })
+})
 
 
 app.post('/student/new', function(request, response){
     const newUser = new Student(request.body)
 
     newUser.save(function (err, data) {
-        if (err)
+        if (err){
+          console.log(err);
           return response.status(400).json({
             error: 'data is missing'
           })
+        }
           response.redirect("/addStudent")
         // return response.status(200).json({
         //   message: 'Student added successfully'

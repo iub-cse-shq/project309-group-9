@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Teacher Data</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header class="container-fluid">
@@ -30,9 +30,9 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link active" href="/">HOME</a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link active" href="/dashboard">DASHBOARD</a>
                 </li>
@@ -54,7 +54,7 @@
           </div>
         </div>
       </nav>
-    <form style="margin-top: 40px;" class="container" action="" method="POST">
+    <form style="margin-top: 40px;" class="container" action="/teacher/new" method="POST">
     <div class="form-row mb-3">
         <div class="col">
             <h3 style="text-align: center;">Add Teacher data:</h3>
@@ -62,26 +62,26 @@
         </div>
         <div class="form-row mb-3">
             <div class="col">
-                <input type="text" class="form-control"  placeholder="First Name" name="tFname" required>
+                <input type="text" class="form-control"  placeholder="First Name" name="firstname">
               </div>
               <div class="col">
-                <input type="text" class="form-control"  placeholder="last Name" name="tLname" required>
+                <input type="text" class="form-control"  placeholder="last Name" name="lastname">
               </div>
             </div>
         <div class="form-row mb-3">
           <div class="col">
-            <input type="number" class="form-control" id="" placeholder="Enter Teacher ID" name="tId" required>
+            <input type="number" class="form-control" min="1" id="" placeholder="Enter Teacher ID" name="teacherId" required>
           </div>
             <div class="col">
-              <input type="text" class="form-control" id="" placeholder="Enter University" name="tUniversity" required>
+              <input type="text" class="form-control" id="" placeholder="Enter University" name="teachers_uni" required>
             </div>
           </div>
           <div class="form-row mb-3">
             <div class="col">
-              <input type="number" class="form-control" id="" placeholder="Income" name="tIncome" required>
+              <input type="number" class="form-control" id="" placeholder="Income" name="income" required>
             </div>
               <div class="col">
-                <input type="text" class="form-control" id="" placeholder="Rank" name="tRank" required>
+                <input type="text" class="form-control" id="" placeholder="Rank" name="teachers_rank" required>
               </div>
             </div>
 
