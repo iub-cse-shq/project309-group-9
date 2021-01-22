@@ -14,18 +14,12 @@ const StudentSchema = new Schema({
         type: String,
         required: true
     },
-    school: {
-        type: String,
-        required: true
-    },
+    school: String,
     dept: {
         type: String,
         required: true
     },
-    major: {
-        type: String,
-        required: true
-    },
+    major: String,
     semester: {
         type: String,
         required: true

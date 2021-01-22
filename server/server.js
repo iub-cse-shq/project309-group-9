@@ -24,16 +24,16 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-var storage = multer.diskStorage({  
-  destination:(req,file,cb)=>{  
-      cb(null,'./public/uploads');  
-  },  
-  filename:(req,file,cb)=>{  
-      cb(null,file.originalname);  
-  }  
-});  
+// var storage = multer.diskStorage({  
+//   destination:(req,file,cb)=>{  
+//       cb(null,'./public/uploads');  
+//   },  
+//   filename:(req,file,cb)=>{  
+//       cb(null,file.originalname);  
+//   }  
+// });  
 
-var uploads = multer({storage:storage});  
+// var uploads = multer({storage:storage});  
 
 // DB Connection
 const mongoose = require('mongoose');
@@ -76,22 +76,9 @@ app.post('/register', function(request, response){
       })
     }
   })
-
-  // var new_user = new Admin({
-  //   username: request.body.username,
-  //   password: request.body.password
-  // });
-  // // new_user.password = new_user.generateHash(request.password);
-  // new_user.save(function (err, data){
-  //     if (err)
-  //       return response.status(400).json({
-  //         error: 'data is missing'
-  //       })
-  //       return response.status(200).json({
-  //         message: 'admin user created successfully'
-  //     })
-  // });
 })
+
+// Login as admin
 
 app.post('/', function(request, response){
   const user = new Admin({
@@ -134,19 +121,18 @@ app.get('/logout', function(request, response){
 })
 
 app.get('/dashboard', function(request, response){
-//   csvModel.find((err,data)=>{  
-//     if(err){  
-//         console.log(err);  
-//     }else{  
-//          if(data!=''){  
-//              res.render('demo',{data:data});  
-//          }else{  
-//              res.render('demo',{data:''});  
-//          }  
-//     }  
-// })
     response.sendFile(path.join(__dirname , '../client/public/files/dashboard.html'));
 })
+
+app.get('/student.csv', function(request, response){
+  return response.sendFile(path.join(__dirname , '../client/public/uploads/student.csv'));
+})
+
+
+app.get('/teacher.csv',function(request, response){
+  return response.sendFile(path.join(__dirname , '../client/public/uploads/teachers.csv'));
+})
+
 
 app.get('/addStudent', function(request, response){
   if(request.isAuthenticated()){

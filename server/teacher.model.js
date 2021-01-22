@@ -21,12 +21,6 @@ const TeacherSchema = new Schema({
         required: true
     }
     
-    // role:{
-    //     type: String,
-    //     required: true,
-    //     enum: ["Student", "Teacher"]
-    // },/* Student or Teacher */
-    // profile: { type: ObjectID, refPath: 'role' }
 });
 
 const Teacher = mongoose.model('teacher', TeacherSchema)
