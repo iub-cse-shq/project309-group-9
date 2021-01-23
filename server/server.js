@@ -84,25 +84,6 @@ app.post('/', function(request, response){
       })
     }
   })
-
-  // const username = request.body.username;
-  // const password = request.body.password;
-  // Admin.findOne({username: username}, function(err, user) {
-  //   if(err){
-  //     console.log(err);
-  //     return response.status(400).json({
-  //       error: 'data is missing'
-  //     })
-  //     // alert('Username or Password is incorrect!')
-  //   }
-  //   else{
-  //     if(user){
-  //       if(user.password===password){
-  //           response.sendFile(path.join(__dirname , '../client/public/files/addStudent.html'));
-  //       }
-  //     }
-  //   }
-  // });
 })
 
 app.get('/logout', function(request, response){
@@ -181,14 +162,14 @@ app.post('/student/new', function(request, response){
 
 app.post('/teacher/new', function(request, response){
   var newUser = new Teacher(request.body)
-
   newUser.save(function (err, data) {
       if (err){
         return response.status(400).json({
           error: 'data is missing'
         })
       }
-      response.redirect("/addTeacher")
+      return response.status(200);
+      // response.redirect("/addTeacher")
     })     
 })
 
