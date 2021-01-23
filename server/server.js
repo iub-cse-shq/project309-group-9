@@ -24,16 +24,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// var storage = multer.diskStorage({  
-//   destination:(req,file,cb)=>{  
-//       cb(null,'./public/uploads');  
-//   },  
-//   filename:(req,file,cb)=>{  
-//       cb(null,file.originalname);  
-//   }  
-// });  
-
-// var uploads = multer({storage:storage});  
 
 // DB Connection
 const mongoose = require('mongoose');
@@ -130,7 +120,7 @@ app.get('/student.csv', function(request, response){
 
 
 app.get('/teacher.csv',function(request, response){
-  return response.sendFile(path.join(__dirname , '../client/public/uploads/teachers.csv'));
+  return response.sendFile(path.join(__dirname , '../client/public/uploads/teacher.csv'));
 })
 
 
@@ -186,9 +176,6 @@ app.post('/student/new', function(request, response){
           })
         }
           response.redirect("/addStudent")
-        // return response.status(200).json({
-        //   message: 'Student added successfully'
-        // })
       })     
 })
 
@@ -196,42 +183,15 @@ app.post('/teacher/new', function(request, response){
   var newUser = new Teacher(request.body)
 
   newUser.save(function (err, data) {
-      if (err)
+      if (err){
         return response.status(400).json({
           error: 'data is missing'
         })
-      return response.status(200).json({
-        message: 'Teacher added successfully'
-      })
+      }
+      response.redirect("/addTeacher")
     })     
 })
 
-// app.put('/product/update/:id/:quantity/', (request, response) => {
-//   Product.findByIdAndUpdate(request.params.id,{'quantity':request.params.quantity}, {new:true}, (err, data) => {
-//     console.log(data);
-//     if(err){
-//       return response.status(400).json({
-//         error: 'Request failed'
-//       })
-//     }
-//     return response.status(200).json({
-//       message: 'Product updated successfully'
-//     })
-//   })
-// })
-
-// app.delete('/product/:id', (request, response) => {
-//   Product.findByIdAndRemove(request.params.id, (err, data) => {
-//     if(err){
-//       return response.status(400).json({
-//         error: 'Request failed'
-//       })
-//     }
-//     return response.status(200).json({
-//       message: 'Product deleted successfully'
-//     })
-//   })
-// })
 
 
 server.listen(process.env.PORT || 3000,

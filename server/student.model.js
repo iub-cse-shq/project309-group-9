@@ -24,13 +24,6 @@ const StudentSchema = new Schema({
         type: String,
         required: true
     }
-    
-    // role:{
-    //     type: String,
-    //     required: true,
-    //     enum: ["Student", "Teacher"]
-    // },/* Student or Teacher */
-    // profile: { type: ObjectID, refPath: 'role' }
 });
 
 

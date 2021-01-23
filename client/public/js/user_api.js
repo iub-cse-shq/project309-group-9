@@ -76,12 +76,12 @@ function getStudentViaCSV(){
 return students;  
 }
 
-function addTeachersViaCSV(newStudent){
-
+function addTeachersViaCSV(newTeacher){
+    console.log(newTeacher)
     $.ajax({
         type: 'POST',
         url: '/teacher/new',
-        data: newStudent,
+        data: newTeacher,
         success: response => {
             console.log(response);
         },

@@ -1,60 +1,5 @@
-// function showPassBtn(){
-//     var x = document.getElementById("myPassword");
-//         if (x.type === "password") {
-//         x.type = "text";
-//         } else {
-//         x.type = "password";
-//         }
-// }
-
-// $('#submitStdCSV').click(function(){
-//   function readSingleFile(evt) {
-//     var f = evt.target.files[0]; 
-//     if (f) {
-//       var r = new FileReader();
-//       r.onload = function(e) { 
-//           var contents = e.target.result;
-//           document.write("File Uploaded! <br />" + "name: " + f.name + "<br />" + "content: " + contents + "<br />" + "type: " + f.type + "<br />" + "size: " + f.size + " bytes <br />");
-
-//           var lines = contents.split("\n"), output = [];
-//           for (var i=0; i<lines.length; i++){
-//             output.push("<tr><td>" + lines[i].split(",").join("</td><td>") + "</td></tr>");
-//           }
-//           output = "<table>" + output.join("") + "</table>";
-//           document.write(output);
-//      }
-//       r.readAsText(f);
-//       document.write(output);
-//     } else { 
-//       alert("Failed to load file");
-//     }
-//   }
-//   document.getElementById('stdCSV').addEventListener('change', readSingleFile);
-// })
-
-// add Student data individually
-
-// $('#addStudentBtn').click(function(){
-//     let year = $('#year').val();
-//     let studentId = $('#studentId').val();
-//     let university = $('#university').val();
-//     let school = $('#school').val();
-//     let dept = $('#dept').val();
-//     let major = $('major').val();
-//     let semester = $('semester').val();
-    
-//     if(year && studentId && university && school && major){
-//         let newStudent = {year:year, studentId:studentId, university: university, school: school, dept:dept, major: major, semester: semester};
-//         addStudent(newStudent);
-//     }
-// })
-
-// const readData = getStudentViaCSV();
-// console.log(readData);
 
 $('#submitStdCSV').click(function(){
-    let urlPath = $('#csvPathLink').val();
-    let filePath = $('stdCSV').val();
     const readData = getStudentViaCSV();
     if(readData){
       for(let i=0; i<readData.length; i++){
@@ -63,38 +8,26 @@ $('#submitStdCSV').click(function(){
         readData[i].dept = readData[i].dept.toLowerCase();
         readData[i].major = readData[i].major.toLowerCase();
         readData[i].semester = readData[i].semester.toLowerCase();
-      
-      // console.log('readData', readData);
-      // console.log(filePath);
-      // const readData = getStudentViaCSV(filePath);
-      // console.log(readData);
+
       let newStudent = {year:readData[i].year, studentId:readData[i].studentId, university: readData[i].university, school: readData[i].school, dept:readData[i].dept, major: readData[i].major, semester: readData[i].semester};
       addStudentsViaCSV(newStudent);
       }
-      // console.log('readData', readData);
     }
 })
 
 $('#submitTeacherCSV').click(function(){
-  let urlPath = $('#csvPathLink').val();
-  let filePath = $('stdCSV').val();
   const readData = getTeacherViaCSV();
+  console.log(readData);
   if(readData){
     for(let i=0; i<readData.length; i++){
       readData[i].firstname = readData[i].firstname.toLowerCase();
       readData[i].lastname = readData[i].lastname.toLowerCase();
       readData[i].teachers_uni = readData[i].teachers_uni.toLowerCase();
-      readData[i].income = readData[i].income.toLowerCase();
       readData[i].teachers_rank = readData[i].teachers_rank.toLowerCase();
-    
-    // console.log('readData', readData);
-    // console.log(filePath);
-    // const readData = getStudentViaCSV(filePath);
-    // console.log(readData);
+
     let newTeacher = {firstname:readData[i].firstname, lastname:readData[i].lastname, teacherId: readData[i].teacherId, teachers_uni: readData[i].teachers_uni, income: readData[i].income, teachers_rank:readData[i].teachers_rank};
     addTeachersViaCSV(newTeacher);
     }
-    // console.log('readData', readData);
   }
 })
 
@@ -106,7 +39,7 @@ const teacherData = getTeacherData();
 // console.log(teacherData);
 
 // Chart Generation 
-//PIE Chart
+//Student list PIE Chart
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawStudentPieChart);
 
@@ -151,6 +84,8 @@ function drawStudentPieChart() {
 }
 
 // google.charts.load('current', {'packages':['corechart']});
+
+// Teacher's list piechart
 google.charts.setOnLoadCallback(drawTeacherPieChart);
 function drawTeacherPieChart() {
 
@@ -219,7 +154,7 @@ function drawPhdBarChart() {
   }
   }
   var data = google.visualization.arrayToDataTable([
-    ['University', 'Phd teacher\'s rate per university'],
+    ['University', 'Phd teacher\'s per university'],
     ["IUB", iubC],
     ["NSU", nsuC],
     ["AIUB", aiubC],
@@ -227,7 +162,7 @@ function drawPhdBarChart() {
     ["DIU", diuC]
   ]);
   var options = {
-    title: 'Phd teacher\'s rate in private University\'s'
+    title: 'Phd teacher\'s in private University\'s'
   };
 
   var chart = new google.visualization.BarChart(document.getElementById('phdBarChart'));
@@ -261,7 +196,7 @@ function drawLecturerBarChart() {
     }
 }
   var data = google.visualization.arrayToDataTable([
-    ['University', 'Lecturer\'s rate per university'],
+    ['University', 'Lecturer\'s per university'],
     ["IUB", iubC],
     ["NSU", nsuC],
     ["AIUB", aiubC],
@@ -269,7 +204,7 @@ function drawLecturerBarChart() {
     ["DIU", diuC]
   ]);
   var options = {
-    title: 'Lecturer\'s rate in private University\'s'
+    title: 'Lecturer\'s in private University\'s'
   };
 
   var chart = new google.visualization.BarChart(document.getElementById('lecturerBarChart'));
@@ -308,7 +243,7 @@ function drawAvgSalaryColumnChart() {
       }
 }
   var data = google.visualization.arrayToDataTable([
-    ['University', 'Average income rate per university', { role: 'style' } ],
+    ['University', 'Average income per university', { role: 'style' } ],
     ["IUB", parseFloat(iubS/iubC), 'color: red'],
     ["NSU", parseFloat(nsuS/nsuC), 'color: #76A7FA'],
     ["AIUB", parseFloat(aiubS/aiubC), 'opacity: 0.2'],
@@ -317,7 +252,7 @@ function drawAvgSalaryColumnChart() {
   ]);
 
   var options = {
-    title: 'Average income rate for faculty\'s in private University\'s',
+    title: 'Average income for faculty\'s in private University\'s',
   };
 
   var chart = new google.visualization.ColumnChart(document.getElementById('avgSalaryColumnChart'));
@@ -325,8 +260,154 @@ function drawAvgSalaryColumnChart() {
   chart.draw(data, options);
 }
 
+// Engineering Studnents Donut Chart
 
-// Column Chart
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawEngStudentDonutChart);
+
+
+function drawEngStudentDonutChart() {
+
+  let nsuC = 0;
+  let iubC = 0;
+  let aiubC = 0;
+  let uiuC = 0;
+  let diuC = 0;
+  for(let i=0; i<studentData.length; i++){
+    if(studentData[i].dept.endsWith("e")){
+      if(studentData[i].university === 'nsu'){
+        nsuC+=1;
+      }
+      else if(studentData[i].university === 'iub'){
+        iubC+=1;
+      }else if(studentData[i].university === 'aiub'){
+        aiubC+=1;
+      }else if(studentData[i].university === 'uiu'){
+        uiuC+=1;
+      }
+      else if(studentData[i].university === 'diu'){
+        diuC+=1;
+      }
+    }
+  }
+  var data = google.visualization.arrayToDataTable([
+    ['University', 'Engineering Student\'s rate per university'],
+    ["IUB", iubC],
+    ["NSU", nsuC],
+    ["AIUB", aiubC],
+    ["UIU", uiuC],
+    ["DIU", diuC]
+  ]);
+  var options = {
+    title: 'Engineering Students rate in private University\'s',
+    pieHole: 0.4,
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('studentsEngDonutChart'));
+
+  chart.draw(data, options);
+}
+
+
+// BBA Studnents Donut Chart
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawBbaStudentDonutChart);
+
+
+function drawBbaStudentDonutChart() {
+
+  let nsuC = 0;
+  let iubC = 0;
+  let aiubC = 0;
+  let uiuC = 0;
+  let diuC = 0;
+  for(let i=0; i<studentData.length; i++){
+    if(studentData[i].dept === 'bba'){
+      if(studentData[i].university === 'nsu'){
+        nsuC+=1;
+      }
+      else if(studentData[i].university === 'iub'){
+        iubC+=1;
+      }else if(studentData[i].university === 'aiub'){
+        aiubC+=1;
+      }else if(studentData[i].university === 'uiu'){
+        uiuC+=1;
+      }
+      else if(studentData[i].university === 'diu'){
+        diuC+=1;
+      }
+    }
+  }
+  var data = google.visualization.arrayToDataTable([
+    ['University', 'BBA Student\'s rate per university'],
+    ["IUB", iubC],
+    ["NSU", nsuC],
+    ["AIUB", aiubC],
+    ["UIU", uiuC],
+    ["DIU", diuC]
+  ]);
+  var options = {
+    title: 'BBA Students rate in private University\'s',
+    pieHole: 0.4,
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('studentsBbaDonutChart'));
+
+  chart.draw(data, options);
+}
+
+// Other than engineering and bba Studnents Donut Chart
+
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawOtherStudentDonutChart);
+
+
+function drawOtherStudentDonutChart() {
+
+  let nsuC = 0;
+  let iubC = 0;
+  let aiubC = 0;
+  let uiuC = 0;
+  let diuC = 0;
+  for(let i=0; i<studentData.length; i++){
+    if(!studentData[i].dept.endsWith("e") && studentData[i].dept != 'bba'){
+      if(studentData[i].university === 'nsu'){
+        nsuC+=1;
+      }
+      else if(studentData[i].university === 'iub'){
+        iubC+=1;
+      }else if(studentData[i].university === 'aiub'){
+        aiubC+=1;
+      }else if(studentData[i].university === 'uiu'){
+        uiuC+=1;
+      }
+      else if(studentData[i].university === 'diu'){
+        diuC+=1;
+      }
+    }
+  }
+  var data = google.visualization.arrayToDataTable([
+    ['University', 'Other than Engineering and BBA Student\'s rate per university'],
+    ["IUB", iubC],
+    ["NSU", nsuC],
+    ["AIUB", aiubC],
+    ["UIU", uiuC],
+    ["DIU", diuC]
+  ]);
+  var options = {
+    title: 'Other than Engineering and BBA Students rate in private University\'s',
+    pieHole: 0.4,
+  };
+
+  var chart = new google.visualization.PieChart(document.getElementById('studentsOtherDeptDonutChart'));
+
+  chart.draw(data, options);
+}
+
+
+
+// Yearly data Column Chart
 google.charts.setOnLoadCallback(drawYearlyStdAreaChart);
 function drawYearlyStdAreaChart() {
   let nsuY15 = nsuY16 = nsuY17 = nsuY18 = nsuY19 = nsuY20 = 0;
