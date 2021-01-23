@@ -1,11 +1,8 @@
-<h1 style="text-align:center">
+<h2 style="text-align:center">
 UNIVERSITY DATA COLLECTION AND DISPLAY (UGC BASED)
-</h1>
-<p style="display: inline-block">
-<img src="client/public/img/ugc-final-1589729658965.jpg" width="250" height="200"/>
-</p>
-<p style="float:right; display: inline-block">
-<img src="client/public/img/digital_bd.jpg" width="250" height="200"/>
+</h2>
+<p align:center>
+<img src="client/public/screenshot/0.png" height="200"/>
 </p>
 
 ---
