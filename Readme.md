@@ -17,7 +17,6 @@ UNIVERSITY DATA COLLECTION AND DISPLAY (UGC BASED)
 #### 1. Install Node.js and MongoDB on your computer.
 
 #### 2. Download this code, and from command prompt run:
-        npm install
 
         npm init
 
@@ -35,6 +34,15 @@ UNIVERSITY DATA COLLECTION AND DISPLAY (UGC BASED)
 
 
 ## **PROJECT DOCUMENTAION**
+Admin users can add, remove and compare Data.
+Students can view stduent data and campare.(university provided id required)
+Faculty  members can view teacher data and compare. (universtity provided id required)
 
 * This is the home page of the website where only admin can login by pressing the **LOGIN** button to add new data for any univerisity. We used **Passport** authentication middlewire for authentication & security purpose to add cookies & sessions.
 <img src="client/public/screenshot/3.png">
+
+* Admin can add individual data or use a csv file to add multiple data 
+<img src="client/public/screenshot/4.png">
+ 
+ * In the Dashboard user can view and compare each universites data.
+<img src="client/public/screenshot/2.png">
