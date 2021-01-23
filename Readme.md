@@ -1,16 +1,21 @@
-<h2 style="text-align:center">
+<h2 align=center>
 UNIVERSITY DATA COLLECTION AND DISPLAY (UGC BASED)
 </h2>
-<p align:center>
+<p align=center>
 <img src="client/public/screenshot/0.png" height="200"/>
 </p>
 
 ---
 
 ## **PROJECT DEVELOPED BY - GROUP-9**
+#### S.M Mohaiminul islam Eraj (1721499)
+#### Farhan Abtahi             (1630026)
+
+---
 
 ## **PROJECT INTRODUCTION**
-#### **University Grant Comission of Bangladesh (UGC Based)** is an under development website for the students and faculties or any users who can see and compare each private universities data.
+#### **University Grant Comission of Bangladesh (UGC Based)** is a prototype website for the student and faculty members. 
+Admin users can add, remove and compare Data. Users can view charts and also compare charts and print pdf.
 
 
 ## **HOW TO SETUP**
